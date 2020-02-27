@@ -12,8 +12,8 @@
         </form>
     </div>
     <div>Hollo all</div>
-    <form method="post" action="filter">
-        <input type="text" name="filter" placeholder="filter"/>
+    <form method="get" action="/main" class="form-inline">
+        <input type="text" name="filter" class="form-control" value="${filter?ifExists}" placeholder="Search by tag"/>
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <button type="submit">Filter</button>
     </form>

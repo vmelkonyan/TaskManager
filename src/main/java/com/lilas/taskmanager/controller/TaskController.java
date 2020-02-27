@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
-import java.util.Map;
 
 @Controller
 public class TaskController {
@@ -24,26 +23,44 @@ public class TaskController {
         this.taskRepo = taskRepo;
     }
 
-   @GetMapping("/main")
-    public String main(String name, Map<String, Object> model) {
-        model.put("tasks", taskRepo.findAll());
+    @GetMapping("/main")
+    public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
+
+
+        if (filter != null && !filter.isEmpty()) {
+            model.addAttribute("tasks", taskRepo.findAllByTaskName(filter));
+        } else {
+            model.addAttribute("tasks", taskRepo.findAll());
+        }
+        model.addAttribute("filter", filter);
         return "main";
     }
 
     @PostMapping("/main")
     public String save(@AuthenticationPrincipal User autor,
-                       @RequestParam String taskName, @RequestParam(value="taskCreateDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date taskCreateDate,
-                       @RequestParam(value="taskUpdateDate") @DateTimeFormat(pattern="yyyy-MM-dd")  Date taskUpdateDate, @RequestParam String taskDescription,
+                       @RequestParam String taskName, @RequestParam(value = "taskCreateDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date taskCreateDate,
+                       @RequestParam(value = "taskUpdateDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date taskUpdateDate, @RequestParam String taskDescription,
                        Model model) {
-        taskRepo.save(new Task(taskName,taskCreateDate,taskUpdateDate,taskDescription,autor));
+        taskRepo.save(new Task(taskName, taskCreateDate, taskUpdateDate, taskDescription, autor));
         model.addAttribute("tasks", taskRepo.findAll());
         return "main";
     }
+
     @GetMapping("/editTask/{task}")
     public String editTask(@PathVariable Task task) {
 //        taskRepo.save(new Task(taskName,taskCreateDate,taskUpdateDate,taskDescription,autor));
 //        model.addAttribute("tasks", taskRepo.findAll());
         return "taskEdit";
+    }
+
+    @PostMapping("/editTask")
+    public String saveChanges(@RequestParam() String taskName,
+                              @RequestParam() String taskDescription,
+                              @RequestParam("taskId") Task task) {
+        task.setTaskName(taskName);
+        task.setTaskDescription(taskDescription);
+        taskRepo.save(task);
+        return "redirect:/main";
     }
 
     @PostMapping("/filter")
@@ -54,6 +71,6 @@ public class TaskController {
         } else {
             model.addAttribute("tasks", taskRepo.findAll());
         }
-        return "main";
+        return "redirect:/main";
     }
 }
