@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,6 +38,12 @@ public class TaskController {
         taskRepo.save(new Task(taskName,taskCreateDate,taskUpdateDate,taskDescription,autor));
         model.addAttribute("tasks", taskRepo.findAll());
         return "main";
+    }
+    @GetMapping("/editTask/{task}")
+    public String editTask(@PathVariable Task task) {
+//        taskRepo.save(new Task(taskName,taskCreateDate,taskUpdateDate,taskDescription,autor));
+//        model.addAttribute("tasks", taskRepo.findAll());
+        return "taskEdit";
     }
 
     @PostMapping("/filter")

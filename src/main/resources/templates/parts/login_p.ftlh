@@ -1,7 +1,11 @@
 <#macro login path>
     <form action="${path}" method="post">
-        <div><label> User Name : <input type="text" name="username"/> </label></div>
-        <div><label> Password: <input type="password" name="password"/> </label></div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> User Name : <input type="text" name="username"/> </label></div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Password: <input type="password" name="password"/> </label></div>
+<#--        <div>-->
+<#--            <label><input type="hidden" name="userRol"/> </label></div>-->
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <div><input type="submit" value="Sign In"/></div>
     </form>

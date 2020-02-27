@@ -44,6 +44,10 @@ public class User implements UserDetails {
 //        return username;
 //    }
 
+    public boolean isManager(){
+        return userRoles.contains(UserRole.MANAGER);
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -101,4 +105,5 @@ public class User implements UserDetails {
     public void setActive(boolean active) {
         this.active = active;
     }
+
 }
