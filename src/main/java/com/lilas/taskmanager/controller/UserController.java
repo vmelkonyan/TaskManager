@@ -4,6 +4,7 @@ import com.lilas.taskmanager.domain.User;
 import com.lilas.taskmanager.domain.UserRole;
 import com.lilas.taskmanager.repo.UserRepo;
 
+import com.lilas.taskmanager.utils.TaskManagerUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,13 +39,16 @@ public class UserController {
     }
 
     @PostMapping()
-    public String saveUser(@RequestParam String username,
+    public String updateUser(@RequestParam String username,
                            @RequestParam Map<String, String> form,
                            @RequestParam("userId") User user) {
         user.setUsername(username);
+
+        TaskManagerUtils.updateAuthentication(user);
+
         Set<String> roles = Arrays.stream(UserRole.values()).map(UserRole::name).collect(Collectors.toSet());
         for (String key : form.keySet()) {
-            if(roles.contains(key)){
+            if (roles.contains(key)) {
                 user.getUserRoles().add(UserRole.valueOf(key));
             }
         }

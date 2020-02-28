@@ -13,32 +13,36 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String taskName;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date taskCreateDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date taskUpdateDate;
+    //    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private String taskCreateDate;
+    //    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private String taskUpdateDate;
     private String taskDescription;
     @ElementCollection(targetClass = TaskStatus.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "task_status",joinColumns = @JoinColumn(name = "task_id"))
+    @CollectionTable(name = "task_status", joinColumns = @JoinColumn(name = "task_id"))
     @Enumerated(EnumType.STRING)
     private Set<TaskStatus> taskStatuses;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User autor;
+    private User author;
+
+    private TaskStatus taskStatus;
 
     public Task() {
     }
-    public Task(String taskName, Date taskCreateDate, Date taskUpdateDate, String taskDescription , User autor) {
+
+    public Task(String taskName, String taskCreateDate, String taskUpdateDate, String taskDescription, User author) {
         this.taskName = taskName;
         this.taskCreateDate = taskCreateDate;
         this.taskUpdateDate = taskUpdateDate;
         this.taskDescription = taskDescription;
-        this.autor = autor;
+        this.author = author;
+        this.taskStatus = TaskStatus.NEW_TASK;
     }
 
-    public String getAutorName(){
-        return autor.getUsername();
+    public String getAutorName() {
+        return author.getUsername();
     }
 
     public Long getId() {
@@ -57,19 +61,19 @@ public class Task {
         this.taskName = taskName;
     }
 
-    public Date getTaskCreateDate() {
+    public String getTaskCreateDate() {
         return taskCreateDate;
     }
 
-    public void setTaskCreateDate(Date taskCreateDate) {
+    public void setTaskCreateDate(String taskCreateDate) {
         this.taskCreateDate = taskCreateDate;
     }
 
-    public Date getTaskUpdateDate() {
+    public String getTaskUpdateDate() {
         return taskUpdateDate;
     }
 
-    public void setTaskUpdateDate(Date taskUpdateDate) {
+    public void setTaskUpdateDate(String taskUpdateDate) {
         this.taskUpdateDate = taskUpdateDate;
     }
 
@@ -85,15 +89,23 @@ public class Task {
         return taskStatuses;
     }
 
+    public TaskStatus getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(TaskStatus taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
     public void setTaskStatuses(Set<TaskStatus> taskStatuses) {
         this.taskStatuses = taskStatuses;
     }
 
-    public User getAutor() {
-        return autor;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setAutor(User autor) {
-        this.autor = autor;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

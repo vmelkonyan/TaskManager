@@ -11,36 +11,25 @@
             <button type="submit">Add</button>
         </form>
     </div>
-    <div>Hollo all</div>
-    <form method="get" action="/main" class="form-inline">
-        <input type="text" name="filter" class="form-control" value="${filter?ifExists}" placeholder="Search by tag"/>
-        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        <button type="submit">Filter</button>
-    </form>
 
     <#list tasks as task>
         <div>
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">${task.taskName}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">${task.autorName}</h6>
-                    <p class="card-text">${task.taskDescription}</p>
+                    <h5 class="card-title">${task.taskName} <label>Task Name</label></h5>
+                    <h5 class="card-title mb-2 text-muted">${task.autorName}<label>Task Author</label></h5>
+                    <h5 class="card-title mb-2 text-muted">${task.taskStatus}<label>Task Author</label></h5>
+                    <p class="card-text">${task.taskDescription} <label>Task Description</label></p>
 
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">${task.taskCreateDate?date}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">${task.taskUpdateDate?date}</h6>
+                    <h5 class="card-title">${task.taskCreateDate}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">${task.taskUpdateDate}</h6>
                     <a href="/editTask/${task.id}" class="btn btn-primary">edit task</a>
                 </div>
             </div>
-            <#--            <b>${task.id}</b>-->
-            <#--            <span>${task.taskName}</span>-->
-            <#--            <span>${task.taskCreateDate?date}</span>-->
-            <#--            <span>${task.taskUpdateDate?date}</span>-->
-            <#--            <span>${task.taskDescription}</span>-->
-            <#--            <strong>${task.autorName}</strong>-->
         </div>
     <#else >
-        No Mesaege
+        No Messaege
     </#list>
 </@c.page>

@@ -9,24 +9,31 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home</a>
-            </li>
+            <#if !isActive>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+            </#if>
             <li class="nav-item active">
                 <a class="nav-link" href="/main">Tasks</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="/user">User List</a>
-            </li>
+            <#if isManager>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/user">User List</a>
+                </li>
+            </#if>
         </ul>
+
+        <form method="get" action="/main" class="form-inline  mr-3">
+            <input type="text" name="filter" class="form-control" value="${filter?ifExists}"
+                   placeholder="Search by task name"/>
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+            <button type="submit">Search</button>
+        </form>
+
         <div>
-            <@l.logout >
-            </@l.logout>
+            <@l.logout />
         </div>
-        <#--        <form method="post" action="/logout">-->
-        <#--            <input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
-        <#--            <button type="submit">logout</button>-->
-        <#--        </form>-->
-        <div class="navbar-text"> ${name}</div>
+        <div class="navbar-text ml-3"> ${name}</div>
     </div>
 </nav>

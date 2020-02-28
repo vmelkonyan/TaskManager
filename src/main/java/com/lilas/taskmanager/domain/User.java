@@ -45,7 +45,7 @@ public class User implements UserDetails {
 //    }
 
     public boolean isManager(){
-        return userRoles.contains(UserRole.MANAGER);
+        return userRoles != null && userRoles.contains(UserRole.MANAGER);
     }
 
     public void setUsername(String username) {

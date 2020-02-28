@@ -32,22 +32,20 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public String addUse(User user, Model model) {
+    public String addUse(User user, @RequestParam Map<String, String> form , Model model) {
         User user1 = userRepo.findByUsername(user.getUsername());
         if (user1 != null) {
             model.addAttribute("message", "User Already Exists");
             return "register";
 
         }
-//        model.addAttribute("userRoles", UserRole.values());
         Set<String> roles = Arrays.stream(UserRole.values()).map(UserRole::name).collect(Collectors.toSet());
-//        for (String key : userRoles.keySet()) {
-//            if (roles.contains(key)) {
-//                user.getUserRoles().add(UserRole.valueOf(key));
-//            }
-//        }
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
+                user.setUserRoles(Collections.singleton(UserRole.valueOf(key)));
+            }
+        }
         user.setActive(true);
-        user.setUserRoles(Collections.singleton(UserRole.MANAGER));
         userRepo.save(user);
         return "redirect:/main";
     }

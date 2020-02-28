@@ -1,15 +1,31 @@
 <#import "parts/common.ftlh" as c>
+<#include "parts/security.ftlh">
 <@c.page>
     <form action="/editTask" method="post">
-<#--        <#list userRoles as userRol>-->
-<#--            <div>-->
-<#--               <label> <input type="checkbox" name="${userRol}" ${user.userRoles?seq_contains(userRol)?string("chacked","")}>${userRol}</label>-->
-<#--            </div>-->
-<#--        </#list>-->
-        <input type="text" value="${task.taskName}" name = "taskName">
-        <input type="text" value="${task.taskDescription}" name = "taskDescription">
-        <input type="hidden" value="${task.id}" name = "taskId">
+        <input type="text" value="${task.taskName}" name="taskName">
+        <input type="text" value="${task.taskDescription}" name="taskDescription">
+        <input type="hidden" value="${task.id}" name="taskId">
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+        <div class="input-group mt-3">
+            <label class="col-sm-2 col-form-label"> Task Status </label>
+            <select
+                    class="custom-select"  name="taskStatus">
+                <#list taskStatuss as taskStatus>
+                    <option value="${taskStatus}" name="${taskStatus}">${taskStatus}</option>
+                </#list>
+            </select>
+        </div>
+        <#if isManager>
+            <div class="input-group mt-3"  name="taskOvner">
+                <label class="col-sm-2 col-form-label"> Task Assigned </label>
+                <select
+                        class="custom-select" >
+                    <#list usersList as user>
+                        <option value="${user.username}" name="${user.username}">${user.username}</option>
+                    </#list>
+                </select>
+            </div>
+        </#if>
         <button type="submit">Save</button>
     </form>
 </@c.page>
