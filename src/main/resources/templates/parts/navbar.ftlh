@@ -11,24 +11,27 @@
         <ul class="navbar-nav mr-auto">
             <#if !isActive>
                 <li class="nav-item active">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <a class="nav-link" href="/login">Login</a>
                 </li>
             </#if>
             <#if isActive>
-            <li class="nav-item active">
-                <a class="nav-link" href="/main">Tasks</a>
-            </li>
-            </#if>
-            <#if isManager>
                 <li class="nav-item active">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                    <a class="nav-link" href="/main">Tasks</a>
+                </li>
+            </#if>
+            <#if isActive>
+                <li class="nav-item active">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <a class="nav-link" href="/user">User List</a>
                 </li>
             </#if>
         </ul>
         <#if isActive>
-            <form method="get" action="/main" class="form-inline  mr-3">
-                <input type="text" name="filter" value="${filter?ifExists}"
-                       placeholder="Search by task name"/>
+            <form method="get" action="/main" class="form-row">
+                <input type="text" class="form-control col-sm-5 ml-3" id="filter" name="filter"
+                       placeholder="Search by task name" value="${filter?ifExists}" required>
                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                 <button type="submit" class="button ml-2">Search</button>
             </form>
