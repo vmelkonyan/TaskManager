@@ -13,19 +13,22 @@
                 <#list taskStatuss as taskStatus>
                     <option value="${taskStatus}" name="${taskStatus}">${taskStatus}</option>
                 </#list>
+                <option selected>${task.taskStatus}</option>
             </select>
         </div>
         <#if isManager>
-            <div class="input-group mt-3"  name="taskOvner">
+            <div class="input-group mt-3" >
                 <label class="col-sm-2 col-form-label"> Task Assigned </label>
                 <select
-                        class="custom-select" >
+
+                        class="custom-select"  name="taskOwner">
                     <#list usersList as user>
                         <option value="${user.username}" name="${user.username}">${user.username}</option>
                     </#list>
+                    <option selected>${task.author.username}</option>
                 </select>
             </div>
         </#if>
-        <button type="submit">Save</button>
+        <button type="submit">Update</button>
     </form>
 </@c.page>

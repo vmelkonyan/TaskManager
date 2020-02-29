@@ -4,32 +4,30 @@
     <div>
         <form method="post">
             <input type="text" name="taskName" placeholder="add name"/>
-            <input type="date" name="taskCreateDate" placeholder="set create date"/>
-            <input type="date" name="taskUpdateDate" placeholder="set update date"/>
+<#--            <input type="date" name="taskCreateDate" placeholder="set create date"/>-->
+<#--            <input type="date" name="taskUpdateDate" placeholder="set update date"/>-->
             <input type="text" name="taskDescription" placeholder="set description"/>
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <button type="submit">Add</button>
+            <button type="submit">Add Task</button>
         </form>
     </div>
-
+<div class = "card-columns">
     <#list tasks as task>
-        <div>
-            <div class="card" style="width: 18rem;">
+<#--        <div>-->
+            <div class="card  mt-2" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">${task.taskName} <label>Task Name</label></h5>
-                    <h5 class="card-title mb-2 text-muted">${task.autorName}<label>Task Author</label></h5>
-                    <h5 class="card-title mb-2 text-muted">${task.taskStatus}<label>Task Author</label></h5>
-                    <p class="card-text">${task.taskDescription} <label>Task Description</label></p>
+                    <h5 class="card-title"> <label>Task Name :</label> ${task.taskName}</h5>
+                    <h5 class="card-title"><label>Task Author : </label>${task.autorName}</h5>
+                    <h5 class="card-title"><label>Task Status : </label> ${task.taskStatus}</h5>
+                    <h5 class="card-text"> <label>Task Description : </label> ${task.taskDescription} </h5>
 
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">${task.taskCreateDate}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">${task.taskUpdateDate}</h6>
+                    <h5 class=<label>Cr. Date : </label> ${task.taskCreateDate}</h5>
+                    <h5 class="card-title "> <label>Update Date : </label> ${task.taskUpdateDate}</h5>
                     <a href="/editTask/${task.id}" class="btn btn-primary">edit task</a>
                 </div>
-            </div>
         </div>
     <#else >
-        No Messaege
+        No Task
     </#list>
+</div>
 </@c.page>

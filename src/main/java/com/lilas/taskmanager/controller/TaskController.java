@@ -1,5 +1,6 @@
 package com.lilas.taskmanager.controller;
 
+import com.lilas.taskmanager.constatns.KeyConstants;
 import com.lilas.taskmanager.domain.Task;
 import com.lilas.taskmanager.domain.TaskStatus;
 import com.lilas.taskmanager.domain.User;
@@ -31,13 +32,13 @@ public class TaskController {
         this.userRepo = userRepo;
     }
 
-    @GetMapping("/main")
+    @GetMapping(KeyConstants.MAIN_KEY)
     public String main(@RequestParam(required = false, defaultValue = "") String filter, @AuthenticationPrincipal User user, Model model) {
 
 
         checkBeforeShown(filter, user, model);
         model.addAttribute("filter", filter);
-        return "main";
+        return KeyConstants.MAIN_VIEW_KEY;
     }
 
     private void checkBeforeShown(@RequestParam(required = false, defaultValue = "") String filter, @AuthenticationPrincipal User user, Model model) {
@@ -57,12 +58,9 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/main")
+    @PostMapping(KeyConstants.MAIN_KEY)
     public String save(@AuthenticationPrincipal User user,
-                       @RequestParam String
-                               taskName, @RequestParam(value = "taskCreateDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date taskCreateDate,
-                       @RequestParam(value = "taskUpdateDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date
-                               taskUpdateDate, @RequestParam String taskDescription,
+                       @RequestParam String taskName, @RequestParam String taskDescription,
                        Model model) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
@@ -74,7 +72,7 @@ public class TaskController {
             model.addAttribute("tasks", taskRepo.findAllByAuthor(user));
         }
         ;
-        return "main";
+        return KeyConstants.MAIN_VIEW_KEY;
     }
 
     @GetMapping("/editTask/{task}")
@@ -85,7 +83,7 @@ public class TaskController {
     }
 
     @PostMapping("/editTask")
-    public String saveChanges(@RequestParam() String taskName,
+    public String updateTaskChanges(@RequestParam() String taskName,
                               @RequestParam() String taskDescription,
                               @RequestParam() Map<String, String> form,
                               @RequestParam("taskId") Task task) {
@@ -96,20 +94,12 @@ public class TaskController {
         if (form.get("taskStatus") != null) {
             task.setTaskStatus(TaskStatus.valueOf(form.get("taskStatus")));
         }
+        if (form.get("taskOwner") != null) {
+            task.setAuthor(userRepo.findByUsername(form.get("taskOwner")));
+        }
         task.setTaskDescription(taskDescription);
         task.setTaskUpdateDate(dateFormat.format(date));
         taskRepo.save(task);
-        return "redirect:/main";
+        return KeyConstants.REDIRECT_KEY + KeyConstants.MAIN_KEY;
     }
-
-//    @PostMapping("/filter")
-//    public String filter(@RequestParam String filter, Model model) {
-//
-//        if (filter != null && !filter.isEmpty()) {
-//            model.addAttribute("tasks", taskRepo.findAllByTaskName(filter));
-//        } else {
-//            model.addAttribute("tasks", taskRepo.findAll());
-//        }
-//        return "redirect:/main";
-//    }
 }
