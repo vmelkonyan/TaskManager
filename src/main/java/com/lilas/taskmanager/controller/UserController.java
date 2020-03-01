@@ -55,7 +55,7 @@ public class UserController {
     @PostMapping(KeyConstants.ADD_NEW_USER_KEY)
     public String addUse(User user, @RequestParam Map<String, String> form, Model model) {
         if (userService.createNewUser(passwordEncoder,user, form, model)) {
-            return KeyConstants.MAIN_KEY;
+            return KeyConstants.ADD_NEW_USER_VIEW_KEY;
         }
         return KeyConstants.REDIRECT_KEY + KeyConstants.USER_KEY;
 
