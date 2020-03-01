@@ -57,7 +57,7 @@ public class UserController {
         if (userService.createNewUser(passwordEncoder,user, form, model)) {
             return KeyConstants.MAIN_KEY;
         }
-        return KeyConstants.REDIRECT_KEY + KeyConstants.MAIN_KEY;
+        return KeyConstants.REDIRECT_KEY + KeyConstants.USER_KEY;
 
     }
 
