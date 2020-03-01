@@ -32,19 +32,9 @@ public class RegistrationController {
 
     @PostMapping(KeyConstants.REGISTER_KEY)
     public String addUse(User user, @RequestParam Map<String, String> form, Model model) {
-        User userFromDB = userService.findByUsername(user.getUsername());
-        if (userFromDB != null) {
-            model.addAttribute("usernameError", "User Already Exists");
-            model.addAttribute("userRoles", UserRole.values());
-            return KeyConstants.REGISTER_VIEW_KEY;
+        if (userService.createNewUser(passwordEncoder, user, form, model)) {
+            return KeyConstants.ADD_NEW_USER_VIEW_KEY;
         }
-        if (form.get("userRol") != null) {
-            user.setUserRoles(Collections.singleton(UserRole.valueOf(form.get("userRol"))));
-        }
-
-        user.setActive(true);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.save(user);
         return KeyConstants.REDIRECT_KEY + KeyConstants.MAIN_KEY;
 
     }
@@ -56,7 +46,7 @@ public class RegistrationController {
         if (error != null) {
             errorMessge = "Username or Password is incorrect";
         }
-        model.addAttribute("errorMessge", errorMessge);
+        model.addAttribute("errorMessage", errorMessge);
         return KeyConstants.LOGIN_VIEW_KEY;
     }
 

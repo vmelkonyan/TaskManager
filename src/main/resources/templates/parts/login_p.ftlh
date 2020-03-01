@@ -2,7 +2,7 @@
 
 
     <form  action="${path}" method="post" class = "container mt-1">
-        ${errorMessge?ifExists}
+        ${errorMessage?ifExists}
         <div class="form-group">
             <label for="exampleInputEmail1">User Name</label>
             <input type="text" class="form-control col-sm-3" id="username"  name="username" placeholder="User Name" required>

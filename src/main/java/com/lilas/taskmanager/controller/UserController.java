@@ -7,11 +7,13 @@ import com.lilas.taskmanager.domain.UserRole;
 import com.lilas.taskmanager.serice.UserService;
 import com.lilas.taskmanager.utils.TaskManagerUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,9 +24,11 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -40,6 +44,23 @@ public class UserController {
         model.addAttribute("userRoles", UserRole.values());
         return KeyConstants.EDIT_USER_VIEW_KEY;
     }
+
+    @GetMapping(KeyConstants.ADD_NEW_USER_KEY)
+    public String addNewUser(Model model) {
+        model.addAttribute("userRoles", UserRole.values());
+        return KeyConstants.ADD_NEW_USER_VIEW_KEY;
+    }
+
+
+    @PostMapping(KeyConstants.ADD_NEW_USER_KEY)
+    public String addUse(User user, @RequestParam Map<String, String> form, Model model) {
+        if (userService.createNewUser(passwordEncoder,user, form, model)) {
+            return KeyConstants.MAIN_KEY;
+        }
+        return KeyConstants.REDIRECT_KEY + KeyConstants.MAIN_KEY;
+
+    }
+
 
     @PostMapping()
     public String updateUser(@RequestParam String username,

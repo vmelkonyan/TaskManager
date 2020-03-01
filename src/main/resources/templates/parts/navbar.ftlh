@@ -23,26 +23,21 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/user">User List</a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/user/add">Add New User</a>
+                </li>
             </#if>
         </ul>
         <#if isActive>
-
             <form method="get" action="/main" class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" id="filter" name="filter" placeholder="Search by task name" value="${filter?ifExists}" required aria-label="Search">
                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                 <button class="btn btn-outline-primary bg-light my-2 my-sm-0" type="submit">Search</button>
             </form>
-
-<#--            <form method="get" action="/main" class="form-row">-->
-<#--                <input type="text" class="form-control col-sm-2 ml-3" id="filter" name="filter"-->
-<#--                       placeholder="Search by task name" value="${filter?ifExists}" required>-->
-<#--                <input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
-<#--                <button type="submit" class="button ml-2">Search</button>-->
-<#--            </form>-->
         </#if>
         <div>
             <@l.logout />
         </div>
-        <div class="navbar-text ml-3"> ${name}</div>
+        <div class="navbar-text ml-3"> <span style="color: white; "> ${name}</div>
     </div>
 </nav>
