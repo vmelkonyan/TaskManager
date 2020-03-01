@@ -20,9 +20,12 @@
             <label class="col-form-label"> Task Status </label>
             <select class="custom-select  col-sm-3" name="taskStatus">
                 <#list taskStatuss as taskStatus>
-                    <option value="${taskStatus}" name="${taskStatus}">${taskStatus}</option>
+                    <#if task.taskStatus == taskStatus>
+                        <option selected value="${taskStatus}" name="${taskStatus}">${taskStatus}</option>
+                    <#else >
+                        <option value="${taskStatus}" name="${taskStatus}">${taskStatus}</option>
+                    </#if>
                 </#list>
-                <option selected>${task.taskStatus}</option>
             </select>
         </div>
         <#if isManager>
@@ -30,9 +33,12 @@
                 <label> Task Assigned </label>
                 <select class="custom-select col-sm-3" name="taskOwner">
                     <#list usersList as user>
-                        <option value="${user.username}" name="${user.username}">${user.username}</option>
+                        <#if task.assigneeName == user.username>
+                        <option selected value="${user.username}" name="${user.username}">${user.username}</option>
+                        <#else >
+                         <option value="${user.username}" name="${user.username}">${user.username}</option>
+                        </#if>
                     </#list>
-                    <option selected>${task.author.username}</option>
                 </select>
             </div>
         </#if>

@@ -4,16 +4,16 @@ import com.lilas.taskmanager.constatns.KeyConstants;
 import com.lilas.taskmanager.domain.Task;
 import com.lilas.taskmanager.domain.TaskStatus;
 import com.lilas.taskmanager.domain.User;
+import com.lilas.taskmanager.exception.AppException;
 import com.lilas.taskmanager.serice.TaskService;
 import com.lilas.taskmanager.serice.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,43 +42,48 @@ public class TaskController {
             if (user.isManager()) {
                 model.addAttribute("tasks", taskService.findAllByTaskName(filter));
             } else {
-                model.addAttribute("tasks", taskService.findAllByAuthorAndTaskName(user, filter));
+                model.addAttribute("tasks", taskService.findAllByAssigneeAndTaskName(user, filter));
             }
         } else {
             if (user.isManager()) {
                 model.addAttribute("tasks", taskService.findAll());
             } else {
-                model.addAttribute("tasks", taskService.findAllByAuthor(user));
+                model.addAttribute("tasks", taskService.findAllByAssignee(user));
             }
         }
     }
 
     @PostMapping(KeyConstants.MAIN_KEY)
-    public String save(@AuthenticationPrincipal User user,
-                       @RequestParam String taskName, @RequestParam String taskDescription,
-                       Model model) {
+    public String createTask(@AuthenticationPrincipal User user,
+                             @RequestParam String taskName, @RequestParam String taskDescription,
+                             Model model) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         dateFormat.format(date);
-        taskService.save(new Task(taskName, dateFormat.format(date), dateFormat.format(date), taskDescription, user));
+        taskService.save(new Task(taskName, dateFormat.format(date), dateFormat.format(date), taskDescription, user, user));
         if (user.isManager()) {
             model.addAttribute("usersList", userService.findAll());
             model.addAttribute("tasks", taskService.findAll());
         } else {
-            model.addAttribute("tasks", taskService.findAllByAuthor(user));
+            model.addAttribute("tasks", taskService.findAllByAssignee(user));
         }
-        ;
         return KeyConstants.MAIN_VIEW_KEY;
     }
 
     @GetMapping(KeyConstants.EDIT_TASK_KEY + "/{task}")
-    public String editTask(@AuthenticationPrincipal User user, @PathVariable Task task, Model model) {
-        if (user.isManager()) {
-            model.addAttribute("taskStatuss", TaskStatus.values());
+    public String editTask(@AuthenticationPrincipal User user, @PathVariable Task task, Model model) throws AppException {
+
+        if (task != null) {
+            if (user.isManager()) {
+                model.addAttribute("taskStatuss", TaskStatus.values());
+            } else {
+                model.addAttribute("taskStatuss", task.getTaskStatusForEmployee());
+            }
+            model.addAttribute("usersList", userService.findAll());
         } else {
-            model.addAttribute("taskStatuss", task.getTaskStatusForEmployee());
+            throw new AppException();
+
         }
-        model.addAttribute("usersList", userService.findAll());
         return KeyConstants.TASK_EDIT_VIEW;
     }
 
@@ -95,11 +100,20 @@ public class TaskController {
             task.setTaskStatus(TaskStatus.valueOf(form.get("taskStatus")));
         }
         if (form.get("taskOwner") != null) {
-            task.setAuthor(userService.findByUsername(form.get("taskOwner")));
+            task.setAssignee(userService.findByUsername(form.get("taskOwner")));
         }
         task.setTaskDescription(taskDescription);
         task.setTaskUpdateDate(dateFormat.format(date));
         taskService.save(task);
         return KeyConstants.REDIRECT_KEY + KeyConstants.MAIN_KEY;
+    }
+
+    @ExceptionHandler(AppException.class)
+    public ModelAndView handleError(HttpServletRequest req, Exception ex) {
+
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("errorMessage", "Task not found");
+        mav.setViewName("error");
+        return mav;
     }
 }

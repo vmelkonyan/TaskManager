@@ -8,8 +8,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 final public class TaskManagerUtils {
 
     public static void updateAuthentication( User user){
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        User sessionUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(user.getId().equals(sessionUser.getId())){
+            Authentication authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
     }
 
     private TaskManagerUtils() {

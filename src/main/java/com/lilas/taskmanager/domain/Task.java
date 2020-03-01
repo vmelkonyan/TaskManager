@@ -1,10 +1,7 @@
 package com.lilas.taskmanager.domain;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,20 +24,26 @@ public class Task {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User author;
+    private User assignee;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private User creator;
 
     private TaskStatus taskStatus;
 
     public Task() {
     }
 
-    public Task(String taskName, String taskCreateDate, String taskUpdateDate, String taskDescription, User author) {
+    public Task(String taskName, String taskCreateDate, String taskUpdateDate, String taskDescription, User assignee, User creator) {
         this.taskName = taskName;
         this.taskCreateDate = taskCreateDate;
         this.taskUpdateDate = taskUpdateDate;
         this.taskDescription = taskDescription;
-        this.author = author;
+        this.assignee = assignee;
         this.taskStatus = TaskStatus.NEW_TASK;
+        this.creator = creator;
     }
 
     public Set<TaskStatus> getTaskStatusForEmployee() {
@@ -51,8 +54,12 @@ public class Task {
         return taskStatuses;
     }
 
-    public String getAutorName() {
-        return author.getUsername();
+    public String getAssigneeName() {
+        return assignee.getUsername();
+    }
+
+    public String getCreatorName() {
+        return creator.getUsername();
     }
 
     public Long getId() {
@@ -111,11 +118,19 @@ public class Task {
         this.taskStatuses = taskStatuses;
     }
 
-    public User getAuthor() {
-        return author;
+    public User getAssignee() {
+        return assignee;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public void setAssignee(User assignee) {
+        this.assignee = assignee;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 }

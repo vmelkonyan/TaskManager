@@ -18,7 +18,8 @@
             <div class="card  mt-2" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title"><label>Task Name :</label> ${task.taskName}</h5>
-                    <h5 class="card-title"><label>Task Author : </label>${task.autorName}</h5>
+                    <h5 class="card-title"><label>Task Assignee : </label>${task.assigneeName}</h5>
+                    <h5 class="card-title"><label>Task Creator : </label>${task.creatorName}</h5>
                     <h5 class="card-title"><label>Task Status : </label> ${task.taskStatus}</h5>
                     <h5 class="card-text"><label>Task Description : </label> ${task.taskDescription} </h5>
                     <h5 class=<label>Cr. Date : </label> ${task.taskCreateDate}</h5>

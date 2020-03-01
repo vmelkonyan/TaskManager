@@ -9,7 +9,7 @@ import java.util.List;
 public interface TaskRepo extends CrudRepository<Task, Long> {
     List<Task> findAllByTaskName(String filter);
 
-    List<Task> findAllByAuthor(User author);
+    List<Task> findAllByAssignee(User author);
 
-    List<Task> findAllByAuthorAndTaskName(User author,String filter);
+    List<Task> findAllByAssigneeAndTaskName(User author,String filter);
 }

@@ -26,12 +26,12 @@ public class TaskService {
         return taskRepo.findAllByTaskName(filter);
     }
 
-    public List<Task> findAllByAuthorAndTaskName(User user, String filter) {
-        return taskRepo.findAllByAuthorAndTaskName(user, filter);
+    public List<Task> findAllByAssigneeAndTaskName(User user, String filter) {
+        return taskRepo.findAllByAssigneeAndTaskName(user, filter);
     }
 
-    public List<Task> findAllByAuthor(User user) {
-        return taskRepo.findAllByAuthor(user);
+    public List<Task> findAllByAssignee(User user) {
+        return taskRepo.findAllByAssignee(user);
 
     }
 

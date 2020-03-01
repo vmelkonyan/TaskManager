@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public boolean createNewUser(PasswordEncoder passwordEncoder ,User user, @RequestParam Map<String, String> form, Model model) {
+    public boolean createNewUser(PasswordEncoder passwordEncoder, User user, @RequestParam Map<String, String> form, Model model) {
         User userFromDB = findByUsername(user.getUsername());
         if (userFromDB != null) {
             model.addAttribute("usernameError", "User Already Exists");
@@ -42,6 +42,7 @@ public class UserService implements UserDetailsService {
         }
         if (form.get("userRol") != null) {
             user.setUserRoles(Collections.singleton(UserRole.valueOf(form.get("userRol"))));
+            user.setCurrentUserRole(UserRole.valueOf(form.get("userRol")));
         }
 
         user.setActive(true);

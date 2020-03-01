@@ -16,4 +16,5 @@ public class KeyConstants {
     public static final String LOGIN_KEY = "/login";
     public static final String ADD_NEW_USER_VIEW_KEY = "addNewUser";
     public static final String ADD_NEW_USER_KEY = "/add";
+    public static final String ERROR_VIEW_KEY = "error";
 }

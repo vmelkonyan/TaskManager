@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
+@Table(name = "tb_user")
 public class User implements UserDetails {
 
     @Id
@@ -23,6 +24,8 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_roles",joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<UserRole> userRoles;
+
+    private UserRole currentUserRole;
 
     public User() {
     }
@@ -39,10 +42,6 @@ public class User implements UserDetails {
     public void setId(Long id) {
         this.id = id;
     }
-
-//    public String getUsername() {
-//        return username;
-//    }
 
     public boolean isManager(){
         return userRoles != null && userRoles.contains(UserRole.MANAGER);
@@ -106,4 +105,11 @@ public class User implements UserDetails {
         this.active = active;
     }
 
+    public UserRole getCurrentUserRole() {
+        return currentUserRole;
+    }
+
+    public void setCurrentUserRole(UserRole currentUserRole) {
+        this.currentUserRole = currentUserRole;
+    }
 }
