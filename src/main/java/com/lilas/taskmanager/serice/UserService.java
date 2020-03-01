@@ -1,5 +1,6 @@
 package com.lilas.taskmanager.serice;
 
+import com.lilas.taskmanager.domain.User;
 import com.lilas.taskmanager.repo.UserRepo;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,5 +20,17 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepo.findByUsername(username);
+    }
+
+    public Iterable<User> findAll() {
+        return userRepo.findAll();
+    }
+
+    public User findByUsername(String taskOwner) {
+        return userRepo.findByUsername(taskOwner);
+    }
+
+    public void save(User user) {
+        userRepo.save(user);
     }
 }

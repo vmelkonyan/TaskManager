@@ -3,7 +3,9 @@ package com.lilas.taskmanager.domain;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -39,6 +41,14 @@ public class Task {
         this.taskDescription = taskDescription;
         this.author = author;
         this.taskStatus = TaskStatus.NEW_TASK;
+    }
+
+    public Set<TaskStatus> getTaskStatusForEmployee() {
+        Set<TaskStatus> taskStatuses = new HashSet<>();
+        taskStatuses.addAll(Arrays.asList(TaskStatus.values()));
+        taskStatuses.remove(TaskStatus.REOPEN);
+        taskStatuses.remove(TaskStatus.DONE);
+        return taskStatuses;
     }
 
     public String getAutorName() {

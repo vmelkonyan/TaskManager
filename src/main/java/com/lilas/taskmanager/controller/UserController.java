@@ -1,9 +1,10 @@
 package com.lilas.taskmanager.controller;
 
+import com.lilas.taskmanager.constatns.KeyConstants;
 import com.lilas.taskmanager.domain.User;
 import com.lilas.taskmanager.domain.UserRole;
-import com.lilas.taskmanager.repo.UserRepo;
 
+import com.lilas.taskmanager.serice.UserService;
 import com.lilas.taskmanager.utils.TaskManagerUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,32 +17,34 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping(KeyConstants.USER_KEY)
 @PreAuthorize("hasAnyAuthority('MANAGER')")
 public class UserController {
-    private final UserRepo userRepo;
 
-    public UserController(UserRepo userRepo) {
-        this.userRepo = userRepo;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public String getUserList(Model model) {
-        model.addAttribute("users", userRepo.findAll());
-        return "userList";
+        model.addAttribute("userRoles", UserRole.values());
+        model.addAttribute("users", userService.findAll());
+        return KeyConstants.USERS_LIST_VIEW_KEY;
     }
 
     @GetMapping("{user}")
     public String userEditForm(@PathVariable User user, Model model) {
-        model.addAttribute("users", userRepo.findAll());
+        model.addAttribute("users", userService.findAll());
         model.addAttribute("userRoles", UserRole.values());
-        return "userEdit";
+        return KeyConstants.EDIT_USER_VIEW_KEY;
     }
 
     @PostMapping()
     public String updateUser(@RequestParam String username,
-                           @RequestParam Map<String, String> form,
-                           @RequestParam("userId") User user) {
+                             @RequestParam Map<String, String> form,
+                             @RequestParam("userId") User user) {
         user.setUsername(username);
 
         TaskManagerUtils.updateAuthentication(user);
@@ -52,8 +55,8 @@ public class UserController {
                 user.getUserRoles().add(UserRole.valueOf(key));
             }
         }
-        userRepo.save(user);
-        return "redirect:/user";
+        userService.save(user);
+        return KeyConstants.REDIRECT_KEY + KeyConstants.USER_KEY;
     }
 
 }

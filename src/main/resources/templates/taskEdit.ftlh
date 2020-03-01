@@ -2,14 +2,23 @@
 <#include "parts/security.ftlh">
 <@c.page>
     <form action="/editTask" method="post">
-        <input type="text" value="${task.taskName}" name="taskName">
-        <input type="text" value="${task.taskDescription}" name="taskDescription">
+
+
+        <div class="form-group mt-3">
+            <label for="exampleInputEmail1">Task Name</label>
+            <input type="text" class="form-control col-sm-3" value="${task.taskName}" name="taskName" required>
+        </div>
+        <div class="form-group mt-3">
+            <label for="exampleInputEmail1">Task description</label>
+            <input type="text" class="form-control col-sm-3" value="${task.taskDescription}" name="taskDescription">
+        </div>
+
         <input type="hidden" value="${task.id}" name="taskId">
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-        <div class="input-group mt-3">
-            <label class="col-sm-2 col-form-label"> Task Status </label>
-            <select
-                    class="custom-select"  name="taskStatus">
+
+        <div class="form-group mt-2">
+            <label class="col-form-label"> Task Status </label>
+            <select class="custom-select  col-sm-3" name="taskStatus">
                 <#list taskStatuss as taskStatus>
                     <option value="${taskStatus}" name="${taskStatus}">${taskStatus}</option>
                 </#list>
@@ -17,11 +26,9 @@
             </select>
         </div>
         <#if isManager>
-            <div class="input-group mt-3" >
-                <label class="col-sm-2 col-form-label"> Task Assigned </label>
-                <select
-
-                        class="custom-select"  name="taskOwner">
+            <div class="form-group mt-2">
+                <label> Task Assigned </label>
+                <select class="custom-select col-sm-3" name="taskOwner">
                     <#list usersList as user>
                         <option value="${user.username}" name="${user.username}">${user.username}</option>
                     </#list>
@@ -29,6 +36,7 @@
                 </select>
             </div>
         </#if>
-        <button type="submit">Update</button>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+
     </form>
 </@c.page>

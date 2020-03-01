@@ -3,13 +3,11 @@ package com.lilas.taskmanager.controller;
 import com.lilas.taskmanager.constatns.KeyConstants;
 import com.lilas.taskmanager.domain.User;
 import com.lilas.taskmanager.domain.UserRole;
-import com.lilas.taskmanager.repo.UserRepo;
+import com.lilas.taskmanager.serice.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.Map;
@@ -18,12 +16,12 @@ import java.util.Map;
 public class RegistrationController {
 
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-    private final UserRepo userRepo;
 
-    public RegistrationController(PasswordEncoder passwordEncoder, UserRepo userRepo) {
+    public RegistrationController(PasswordEncoder passwordEncoder, UserService userService) {
         this.passwordEncoder = passwordEncoder;
-        this.userRepo = userRepo;
+        this.userService = userService;
     }
 
     @GetMapping(KeyConstants.REGISTER_KEY)
@@ -34,7 +32,7 @@ public class RegistrationController {
 
     @PostMapping(KeyConstants.REGISTER_KEY)
     public String addUse(User user, @RequestParam Map<String, String> form, Model model) {
-        User userFromDB = userRepo.findByUsername(user.getUsername());
+        User userFromDB = userService.findByUsername(user.getUsername());
         if (userFromDB != null) {
             model.addAttribute("usernameError", "User Already Exists");
             model.addAttribute("userRoles", UserRole.values());
@@ -46,9 +44,20 @@ public class RegistrationController {
 
         user.setActive(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepo.save(user);
+        userService.save(user);
         return KeyConstants.REDIRECT_KEY + KeyConstants.MAIN_KEY;
 
+    }
+
+    @RequestMapping(value = KeyConstants.LOGIN_KEY, method = RequestMethod.GET)
+    public String loginPage(@RequestParam(value = "error", required = false) String error,
+                            Model model) {
+        String errorMessge = null;
+        if (error != null) {
+            errorMessge = "Username or Password is incorrect";
+        }
+        model.addAttribute("errorMessge", errorMessge);
+        return KeyConstants.LOGIN_VIEW_KEY;
     }
 
     @GetMapping("/")

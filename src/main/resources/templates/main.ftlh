@@ -1,5 +1,6 @@
 <#import "parts/common.ftlh" as c>
 <#import "parts/login_p.ftlh" as l>
+<#include "parts/security.ftlh">
 <@c.page>
     <div>
         <form method="post" class="form-row">
@@ -7,6 +8,7 @@
                    placeholder="Add task name" required>
             <input type="text" class="form-control col-sm-3 ml-3" id="taskDescription" name="taskDescription"
                    placeholder="Set description" required>
+
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             <button type="submit" class="btn btn-primary ml-3">Add Task</button>
         </form>
@@ -21,7 +23,7 @@
                     <h5 class="card-text"><label>Task Description : </label> ${task.taskDescription} </h5>
                     <h5 class=<label>Cr. Date : </label> ${task.taskCreateDate}</h5>
                     <h5 class="card-title "><label>Update Date : </label> ${task.taskUpdateDate}</h5>
-                    <a href="/editTask/${task.id}" class="btn btn-primary">edit task</a>
+                    <a href="/editTask/${task.id}" class="btn btn-primary">Edit task</a>
                 </div>
             </div>
         <#else >

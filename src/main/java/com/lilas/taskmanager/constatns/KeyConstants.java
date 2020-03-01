@@ -11,4 +11,7 @@ public class KeyConstants {
     public static final String USER_KEY = "/user";
     public static final String EDIT_TASK_KEY = "/editTask";
     public static final String SPLASH_KEY = "splash";
+    public static final String TASK_EDIT_VIEW = "taskEdit";
+    public static final String LOGIN_VIEW_KEY = "login";
+    public static final String LOGIN_KEY = "/login";
 }

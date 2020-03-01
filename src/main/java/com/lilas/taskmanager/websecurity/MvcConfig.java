@@ -1,5 +1,6 @@
 package com.lilas.taskmanager.websecurity;
 
+import com.lilas.taskmanager.constatns.KeyConstants;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -8,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcConfig implements WebMvcConfigurer {
 
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
+        registry.addViewController(KeyConstants.LOGIN_KEY).setViewName(KeyConstants.LOGIN_VIEW_KEY);
     }
 
 }
