@@ -21,7 +21,7 @@ public class User implements UserDetails {
     private boolean active;
 
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles",joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<UserRole> userRoles;
 
@@ -43,7 +43,7 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public boolean isManager(){
+    public boolean isManager() {
         return userRoles != null && userRoles.contains(UserRole.MANAGER);
     }
 

@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Controller
 public class RegistrationController {
-    private static final Logger LOGGER= LoggerFactory.getLogger(RegistrationController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 

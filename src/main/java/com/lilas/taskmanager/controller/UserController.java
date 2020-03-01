@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequestMapping(KeyConstants.USER_KEY)
 @PreAuthorize("hasAnyAuthority('MANAGER')")
 public class UserController {
-    private static final Logger LOGGER= LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
@@ -44,7 +44,7 @@ public class UserController {
 
     @GetMapping("{user}")
     public String userEditForm(@PathVariable User user, Model model) throws AppException {
-        if(user != null) {
+        if (user != null) {
             model.addAttribute("editUser", user);
             model.addAttribute("userRoles", UserRole.values());
         } else {
@@ -65,7 +65,7 @@ public class UserController {
         if (userService.createNewUser(passwordEncoder, user, form, model)) {
             return KeyConstants.ADD_NEW_USER_VIEW_KEY;
         }
-        LOGGER.info("user correct add");
+        LOGGER.info("user correct added user name  is {} ", user.getUsername());
         return KeyConstants.REDIRECT_KEY + KeyConstants.USER_KEY;
 
     }
@@ -81,14 +81,15 @@ public class UserController {
         TaskManagerUtils.updateAuthentication(user);
 
         Set<String> roles = Arrays.stream(UserRole.values()).map(UserRole::name).collect(Collectors.toSet());
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.getUserRoles().add(UserRole.valueOf(key));
-                user.setCurrentUserRole(UserRole.valueOf(key));
-            }
+
+        if (form.get("userRol") != null) {
+            user.getUserRoles().clear();
+            user.getUserRoles().add(UserRole.valueOf(form.get("userRol")));
+            user.setCurrentUserRole(UserRole.valueOf(form.get("userRol")));
         }
+
         userService.save(user);
-        LOGGER.info("user correct updated");
+        LOGGER.info("user correct updated is {} ", user.getUsername());
         return KeyConstants.REDIRECT_KEY + KeyConstants.USER_KEY;
     }
 

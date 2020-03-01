@@ -23,7 +23,7 @@ import java.util.Map;
 
 @Controller
 public class TaskController {
-    private static final Logger LOGGER= LoggerFactory.getLogger(TaskController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskController.class);
     private final TaskService taskService;
     private final UserService userService;
 
@@ -88,6 +88,7 @@ public class TaskController {
 
         }
         LOGGER.info("Task edit");
+        LOGGER.info("Task edi is {} ", task.getTaskName());
         return KeyConstants.TASK_EDIT_VIEW;
     }
 
@@ -109,7 +110,7 @@ public class TaskController {
         task.setTaskDescription(taskDescription);
         task.setTaskUpdateDate(dateFormat.format(date));
         taskService.save(task);
-        LOGGER.info("Task correct update");
+        LOGGER.info("Task correct update is {} ", task.getTaskName());
         return KeyConstants.REDIRECT_KEY + KeyConstants.MAIN_KEY;
     }
 
