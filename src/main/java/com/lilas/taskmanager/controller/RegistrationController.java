@@ -4,6 +4,8 @@ import com.lilas.taskmanager.constatns.KeyConstants;
 import com.lilas.taskmanager.domain.User;
 import com.lilas.taskmanager.domain.UserRole;
 import com.lilas.taskmanager.serice.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +16,7 @@ import java.util.Map;
 
 @Controller
 public class RegistrationController {
-
+    private static final Logger LOGGER= LoggerFactory.getLogger(RegistrationController.class);
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
@@ -35,6 +37,7 @@ public class RegistrationController {
         if (userService.createNewUser(passwordEncoder, user, form, model)) {
             return KeyConstants.ADD_NEW_USER_VIEW_KEY;
         }
+        LOGGER.info("User correct add");
         return KeyConstants.REDIRECT_KEY + KeyConstants.MAIN_KEY;
 
     }

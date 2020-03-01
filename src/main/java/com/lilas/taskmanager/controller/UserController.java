@@ -6,6 +6,8 @@ import com.lilas.taskmanager.domain.UserRole;
 import com.lilas.taskmanager.exception.AppException;
 import com.lilas.taskmanager.serice.UserService;
 import com.lilas.taskmanager.utils.TaskManagerUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 @RequestMapping(KeyConstants.USER_KEY)
 @PreAuthorize("hasAnyAuthority('MANAGER')")
 public class UserController {
-
+    private static final Logger LOGGER= LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
@@ -63,6 +65,7 @@ public class UserController {
         if (userService.createNewUser(passwordEncoder, user, form, model)) {
             return KeyConstants.ADD_NEW_USER_VIEW_KEY;
         }
+        LOGGER.info("user correct add");
         return KeyConstants.REDIRECT_KEY + KeyConstants.USER_KEY;
 
     }
@@ -85,6 +88,7 @@ public class UserController {
             }
         }
         userService.save(user);
+        LOGGER.info("user correct updated");
         return KeyConstants.REDIRECT_KEY + KeyConstants.USER_KEY;
     }
 

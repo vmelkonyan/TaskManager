@@ -7,6 +7,8 @@ import com.lilas.taskmanager.domain.User;
 import com.lilas.taskmanager.exception.AppException;
 import com.lilas.taskmanager.serice.TaskService;
 import com.lilas.taskmanager.serice.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +23,7 @@ import java.util.Map;
 
 @Controller
 public class TaskController {
-
+    private static final Logger LOGGER= LoggerFactory.getLogger(TaskController.class);
     private final TaskService taskService;
     private final UserService userService;
 
@@ -67,6 +69,7 @@ public class TaskController {
         } else {
             model.addAttribute("tasks", taskService.findAllByAssignee(user));
         }
+        LOGGER.info("Task correct add");
         return KeyConstants.MAIN_VIEW_KEY;
     }
 
@@ -84,6 +87,7 @@ public class TaskController {
             throw new AppException();
 
         }
+        LOGGER.info("Task edit");
         return KeyConstants.TASK_EDIT_VIEW;
     }
 
@@ -105,6 +109,7 @@ public class TaskController {
         task.setTaskDescription(taskDescription);
         task.setTaskUpdateDate(dateFormat.format(date));
         taskService.save(task);
+        LOGGER.info("Task correct update");
         return KeyConstants.REDIRECT_KEY + KeyConstants.MAIN_KEY;
     }
 
