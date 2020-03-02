@@ -42,7 +42,6 @@ public class UserService implements UserDetailsService {
         }
         if (form.get("userRol") != null) {
             user.setUserRoles(Collections.singleton(UserRole.valueOf(form.get("userRol"))));
-            user.setCurrentUserRole(UserRole.valueOf(form.get("userRol")));
         }
 
         user.setActive(true);

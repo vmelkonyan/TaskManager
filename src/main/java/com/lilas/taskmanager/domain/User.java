@@ -5,7 +5,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,8 +26,6 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<UserRole> userRoles;
-
-    private UserRole currentUserRole;
 
     public User() {
     }
@@ -105,11 +105,9 @@ public class User implements UserDetails {
         this.active = active;
     }
 
+    // FOR UI
     public UserRole getCurrentUserRole() {
-        return currentUserRole;
-    }
-
-    public void setCurrentUserRole(UserRole currentUserRole) {
-        this.currentUserRole = currentUserRole;
+        List list = Arrays.asList(userRoles.toArray());
+        return (UserRole) list.get(0);
     }
 }

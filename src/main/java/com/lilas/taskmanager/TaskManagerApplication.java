@@ -29,7 +29,6 @@ public class TaskManagerApplication implements CommandLineRunner {
 
         User user = new User("admin", passwordEncoder.encode("admin"));
         user.setUserRoles(Collections.singleton(UserRole.MANAGER));
-        user.setCurrentUserRole(UserRole.MANAGER);
         user.setActive(true);
         userRepo.save(user);
 

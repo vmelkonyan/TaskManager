@@ -22,12 +22,12 @@ public class TaskService {
         return taskRepo.findAll();
     }
 
-    public List<Task> findAllByTaskName(String filter) {
-        return taskRepo.findAllByTaskName(filter);
+    public List<Task> findAllByTaskNameContaining(String filter) {
+        return taskRepo.findAllByTaskNameContaining(filter);
     }
 
-    public List<Task> findAllByAssigneeAndTaskName(User user, String filter) {
-        return taskRepo.findAllByAssigneeAndTaskName(user, filter);
+    public List<Task> findAllByAssigneeAndTaskNameContaining(User user, String filter) {
+        return taskRepo.findAllByAssigneeAndTaskNameContaining(user, filter);
     }
 
     public List<Task> findAllByAssignee(User user) {

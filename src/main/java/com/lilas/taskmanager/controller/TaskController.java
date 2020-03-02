@@ -42,9 +42,9 @@ public class TaskController {
     private void checkBeforeShown(@RequestParam(required = false, defaultValue = "") String filter, @AuthenticationPrincipal User user, Model model) {
         if (filter != null && !filter.isEmpty()) {
             if (user.isManager()) {
-                model.addAttribute("tasks", taskService.findAllByTaskName(filter));
+                model.addAttribute("tasks", taskService.findAllByTaskNameContaining(filter));
             } else {
-                model.addAttribute("tasks", taskService.findAllByAssigneeAndTaskName(user, filter));
+                model.addAttribute("tasks", taskService.findAllByAssigneeAndTaskNameContaining(user, filter));
             }
         } else {
             if (user.isManager()) {

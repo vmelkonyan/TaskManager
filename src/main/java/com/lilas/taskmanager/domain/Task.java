@@ -12,9 +12,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String taskName;
-    //    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String taskCreateDate;
-    //    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String taskUpdateDate;
     private String taskDescription;
     @ElementCollection(targetClass = TaskStatus.class, fetch = FetchType.EAGER)

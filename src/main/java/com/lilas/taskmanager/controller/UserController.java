@@ -85,7 +85,6 @@ public class UserController {
         if (form.get("userRol") != null) {
             user.getUserRoles().clear();
             user.getUserRoles().add(UserRole.valueOf(form.get("userRol")));
-            user.setCurrentUserRole(UserRole.valueOf(form.get("userRol")));
         }
 
         userService.save(user);
