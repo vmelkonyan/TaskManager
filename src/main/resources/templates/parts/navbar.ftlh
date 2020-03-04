@@ -30,9 +30,9 @@
         </ul>
         <#if isActive>
             <form method="get" action="/main" class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" id="filter" name="filter" placeholder="Search by task name" value="${filter?ifExists}" required aria-label="Search">
+                <input class="form-control mr-sm-2" type="search" id="filter" name="filter" placeholder="Search by task name" value="${filter?ifExists}"  aria-label="Search">
                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                <button class="btn btn-outline-primary bg-light my-2 my-sm-0" type="submit">Search</button>
+                <button class="btn btn-outline-primary bg-light my-2 my-sm-0" type="button" href="/search">Search</button>
             </form>
         </#if>
         <div>

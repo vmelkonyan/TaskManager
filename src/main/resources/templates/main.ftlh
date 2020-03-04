@@ -25,6 +25,7 @@
                     <h5 class=<label>Cr. Date : </label> ${task.taskCreateDate}</h5>
                     <h5 class="card-title "><label>Update Date : </label> ${task.taskUpdateDate}</h5>
                     <a href="/editTask/${task.id}" class="btn btn-primary">Edit task</a>
+                    <a href="${task.id}" class="btn btn-primary">Delete</a>
                 </div>
             </div>
         <#else >

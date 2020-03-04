@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Key;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,6 +38,10 @@ public class TaskController {
         checkBeforeShown(filter, user, model);
         model.addAttribute("filter", filter);
         return KeyConstants.MAIN_VIEW_KEY;
+    }
+    @GetMapping(KeyConstants.SEARCH_USER_KEY)
+    public String searchUser( Model model) {
+        return KeyConstants.SEARCH_VIEW_KEY;
     }
 
     private void checkBeforeShown(@RequestParam(required = false, defaultValue = "") String filter, @AuthenticationPrincipal User user, Model model) {
@@ -90,6 +95,20 @@ public class TaskController {
         LOGGER.info("Task edit");
         LOGGER.info("Task edi is {} ", task.getTaskName());
         return KeyConstants.TASK_EDIT_VIEW;
+    }
+
+    @GetMapping("{task}")
+    public String deleteTask(@AuthenticationPrincipal User user, @PathVariable Task task, Model model) throws AppException {
+
+        if (task != null) {
+            taskService.deleteTsk(task);
+        } else {
+            throw new AppException();
+
+        }
+        LOGGER.info("Task delete");
+        LOGGER.info("Task delete ", task.getTaskName());
+        return KeyConstants.REDIRECT_KEY + KeyConstants.MAIN_VIEW_KEY;
     }
 
     @PostMapping(KeyConstants.EDIT_TASK_KEY)

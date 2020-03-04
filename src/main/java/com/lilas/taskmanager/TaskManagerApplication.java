@@ -27,11 +27,13 @@ public class TaskManagerApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        User user = new User("admin", passwordEncoder.encode("admin"));
-        user.setUserRoles(Collections.singleton(UserRole.MANAGER));
-        user.setActive(true);
-        userRepo.save(user);
-
+        User userAdmin = userRepo.findByUsername("admin");
+        if(userAdmin == null) {
+            User user = new User("admin", passwordEncoder.encode("admin"));
+            user.setUserRoles(Collections.singleton(UserRole.MANAGER));
+            user.setActive(true);
+            userRepo.save(user);
+        }
     }
 
     private UserRepo userRepo;
